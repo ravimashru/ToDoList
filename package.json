@@ -1,0 +1,14 @@
+{
+  "name": "todolist",
+  "version": "1.0.0",
+  "description": "Simple To-Do list application using openUI5",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ravi Mashru",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
+}
