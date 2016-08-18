@@ -6,5 +6,10 @@ var portNumber = 8000;
 app.use(express.static(__dirname + '/app'));
 app.use('/resources', express.static(__dirname + '/resources'));
 
+// Resource routes
+app.get('/userDetails', function(req, res) {
+
+});
+
 app.listen(portNumber);
 console.log("Listening on port " + portNumber);

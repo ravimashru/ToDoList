@@ -1,12 +1,36 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
-<head>
-<meta charset="UTF-8">
-<title>To Do List</title>
-</head>
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta http-equiv='Content-Type' content='text/html;charset=UTF-8'/>
+    <title>To-Do List</title>
 
-<body>
-It works!
-</body>
+    <script src="resources/sap-ui-core.js"
+        id="sap-ui-bootstrap" data-sap-ui-libs="sap.m"
+        data-sap-ui-resourceroots='{"tdl": "./"}' data-sap-ui-theme="sap_bluecrystal">
+    </script>
+    <script>
+      
+      sap.ui.getCore().attachInit( function() {
+        sap.ui.require(["sap/m/Shell",
+                        "sap/ui/core/ComponentContainer" 
+                       ],
+            function( Shell,
+                  ComponentContainer) {
+              
+              new Shell({
+                app : new ComponentContainer({
+                  name : "tdl",
+                  height : "100%"
+                })
+              }).placeAt("content");
+              
+            });
+      });
+    </script>
 
-</html> 
+  </head>
+  <body class="sapUiBody" role="application">
+    <div id="content"></div>
+  </body>
+</html>
