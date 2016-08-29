@@ -1,8 +1,31 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
-    xmlns:html="http://www.w3.org/1999/xhtml">
-  
-  <SplitApp id="app">
-    
-  </SplitApp>
+  xmlns:html="http://www.w3.org/1999/xhtml" xmlns:u="sap.ui.unified"
+  controllerName="tdl.controller.App">
+    <u:Shell>
 
+      <u:headItems>
+        <u:ShellHeadItem
+          icon="sap-icon://home" />
+      </u:headItems>
+
+        <SplitApp id="app">
+          <masterPages>
+            <Page showHeader="false">
+              <List headerText="Lists" items="{/lists}">
+                <StandardListItem title="{listName}" counter="{listItemsCount}" type="Active"/>
+              </List>
+
+              <footer>
+                <Bar>
+                  <contentRight>
+                    <Button icon="sap-icon://add" />
+                    <Button icon="sap-icon://delete" />
+                  </contentRight>
+                </Bar>
+              </footer>
+            </Page>
+          </masterPages>
+        </SplitApp>
+
+    </u:Shell>
 </core:View>
