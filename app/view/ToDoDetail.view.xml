@@ -1,6 +1,12 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
     xmlns:html="http://www.w3.org/1999/xhtml">
   
-  <Page title="Default Detail" />
+  <Page title="My Lists">
+    <content>
+      <TileContainer tiles="{/lists}">
+        <StandardTile title="{listName}" number="{listItemsCount}" numberUnit="items"/>
+      </TileContainer>
+    </content>
+  </Page>
 
 </core:View>
