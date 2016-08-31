@@ -10,6 +10,7 @@ module.exports = {
 
     data.forEach(function(element, index, arr) {
       listInfos.push({
+        listId: element.id,
         listName: element.listName,
         listItemsCount: element.todoitems.length
       });

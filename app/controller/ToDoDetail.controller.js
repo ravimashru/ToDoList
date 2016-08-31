@@ -1,5 +1,6 @@
-sap.ui.define(["tdl/controller/BaseController"],
-  function(BaseController) {
+sap.ui.define(["tdl/controller/BaseController",
+  "sap/ui/model/json/JSONModel"],
+  function(BaseController, JSONModel) {
 
   "use strict";
 
@@ -19,6 +20,14 @@ sap.ui.define(["tdl/controller/BaseController"],
       });
 
       this.getView().setModel(oModel);
+    },
+
+    onTilePress: function(oEvent) {
+      var listId = oEvent.getSource().getBindingContext().getProperty('listId');
+
+      this.getRouter().navTo("list", {
+        listId: listId
+      });
     }
 
   });

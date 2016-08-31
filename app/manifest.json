@@ -49,6 +49,10 @@
         "pattern":"",
         "name":"home",
         "target":"default"
+      },{
+        "pattern": "list/{listId}",
+        "name": "list",
+        "target": "list"
       }],
       "targets":{
         "notFound": {
@@ -58,6 +62,10 @@
         "default": {
           "viewName": "ToDoDetail",
           "viewLevel": 1
+        },
+        "list": {
+          "viewName": "ListDetail",
+          "viewLevel": 2
         }
       }
     }

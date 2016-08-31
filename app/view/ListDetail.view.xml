@@ -1,6 +1,10 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
     xmlns:html="http://www.w3.org/1999/xhtml">
   
-  <Page title="Master" />
+  <Page title="My List Title">
+    <content>
+      
+    </content>
+  </Page>
 
 </core:View>

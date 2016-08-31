@@ -22,6 +22,15 @@ sap.ui.define(["tdl/controller/BaseController",
 
       this.getView().setModel(oModel);
 
+    },
+
+    onListItemPress: function(oEvent) {
+      var pressedItem = oEvent.getParameter('listItem');
+      var listId = pressedItem.getBindingContext().getProperty('listId');
+
+      this.getRouter().navTo("list", {
+        listId: listId
+      });
     }
 
   });

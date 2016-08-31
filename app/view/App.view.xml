@@ -11,8 +11,8 @@
         <SplitApp id="app">
           <masterPages>
             <Page showHeader="false">
-              <List headerText="Lists" items="{/lists}">
-                <StandardListItem title="{listName}" counter="{listItemsCount}" type="Active"/>
+              <List headerText="Lists" items="{/lists}" itemPress="onListItemPress">
+                <StandardListItem title="{listName}" counter="{listItemsCount}" type="Active" />
               </List>
 
               <footer>

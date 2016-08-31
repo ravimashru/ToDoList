@@ -1,10 +1,10 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
-    xmlns:html="http://www.w3.org/1999/xhtml">
+    xmlns:html="http://www.w3.org/1999/xhtml" controllerName="tdl.controller.ToDoDetail" >
   
   <Page title="My Lists">
     <content>
       <TileContainer tiles="{/lists}">
-        <StandardTile title="{listName}" number="{listItemsCount}" numberUnit="items"/>
+        <StandardTile title="{listName}" number="{listItemsCount}" numberUnit="items" press="onTilePress" />
       </TileContainer>
     </content>
   </Page>
