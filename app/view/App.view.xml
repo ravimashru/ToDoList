@@ -18,7 +18,7 @@
               <footer>
                 <Bar>
                   <contentRight>
-                    <Button icon="sap-icon://add" />
+                    <Button icon="sap-icon://add" press="onAddNewList" />
                     <Button icon="sap-icon://delete" />
                   </contentRight>
                 </Bar>

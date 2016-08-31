@@ -28,5 +28,22 @@ module.exports = {
     if(listIndex > -1) {
       db.delete("/todolist[" + listIndex + "]");
     }
+  },
+
+  listExists: function(listName) {
+    var listIndex = db.getData("/todolist").findIndex(function(e, i, arr) {
+      return e.listName === listName;
+    });
+
+    if(listIndex > -1) {
+      return true;
+    }
+    return false;
+  },
+
+  createList: function(listName) {
+    // Generate a UUID
+
+    db.push("/todolist[]", {id: "", listName: listName, todoitems: []});
   }
 }
