@@ -13,16 +13,16 @@ sap.ui.define(["tdl/controller/BaseController",
 
     onInit: function() {
 
-      var oModel = new JSONModel();
+      var oModel = new JSONModel("/lists");
 
-      var req = jQuery.ajax({
-        url: "/lists",
-        type: "GET"
-      });
+      // var req = jQuery.ajax({
+      //   url: "/lists",
+      //   type: "GET"
+      // });
 
-      req.done(function(oData){
-        oModel.setData(oData);
-      });
+      // req.done(function(oData){
+      //   oModel.setData(oData);
+      // });
 
       this.getView().setModel(oModel);
 
@@ -72,8 +72,14 @@ sap.ui.define(["tdl/controller/BaseController",
               MessageToast.show("The list was added");
             }
           }).then(function(){
-            // Error! Internal Server Error :/
-            that._refreshList();
+            
+            // Workaround: Wait 500ms before making call to get
+            // updated list
+            that.getView().setBusy(true);
+            jQuery.sap.delayedCall(500, that, function(){
+              this.getView().getModel().loadData("/lists");
+              this.getView().setBusy(false);
+            });
           });
 
           req.fail(function(){
@@ -99,19 +105,7 @@ sap.ui.define(["tdl/controller/BaseController",
       // Open the dialog
       this._oAddListDialog.open();
     },
-
-    _refreshList: function() {
-      var that = this;
-      var req = jQuery.ajax({
-        url: "/lists",
-        type: "GET"
-      });
-
-      req.done(function(oData){
-        that.getView().getModel().setData(oData);
-        that.getView().getModel().refresh();
-      });
-    }
+    
   });
 
 });
