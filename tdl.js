@@ -1,4 +1,5 @@
 var JsonDB = require('node-json-db');
+var uuid = require('uuid');
 
 var db = new JsonDB("tdl", true, true);
 
@@ -19,10 +20,10 @@ module.exports = {
     return {lists: listInfos};
   },
 
-  deleteList: function(listName) {
+  deleteList: function(listId) {
     // Get the index of the list to delete in the data
     var listIndex = db.getData("/todolist").findIndex(function(e, i, arr) {
-      return e.listName === listName;
+      return e.id === listId;
     });
 
     if(listIndex > -1) {
@@ -42,8 +43,23 @@ module.exports = {
   },
 
   createList: function(listName) {
-    // Generate a UUID
+    db.push("/todolist[]", {id: uuid.v1(), listName: listName, todoitems: []});
+  },
 
-    db.push("/todolist[]", {id: "", listName: listName, todoitems: []});
+  getList: function(listId) {
+    var listIndex = db.getData("/todolist").findIndex(function(e, i, arr) {
+      return e.id === listId;
+    });
+    return {
+      index: listIndex,
+      listData: db.getData("/todolist[" + listIndex + "]")
+    };
+  },
+
+  renameList: function(listId, newlistName) {
+    var oList = this.getList(listId);
+
+    oList.listData.listName = newlistName;
+    db.push("/todolist[" + oList.index + "]", oList.listData, true);
   }
 }

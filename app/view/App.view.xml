@@ -12,14 +12,13 @@
           <masterPages>
             <Page showHeader="false">
               <List headerText="Lists" items="{/lists}" itemPress="onListItemPress">
-                <StandardListItem title="{listName}" counter="{listItemsCount}" type="Active" />
+                <StandardListItem title="{listName}" counter="{listItemsCount}" type="DetailAndActive" detailPress="onPressDetail" />
               </List>
 
               <footer>
                 <Bar>
                   <contentRight>
                     <Button icon="sap-icon://add" press="onAddNewList" />
-                    <Button icon="sap-icon://delete" />
                   </contentRight>
                 </Bar>
               </footer>

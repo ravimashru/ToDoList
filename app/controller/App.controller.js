@@ -105,6 +105,95 @@ sap.ui.define(["tdl/controller/BaseController",
       // Open the dialog
       this._oAddListDialog.open();
     },
+
+    onPressDetail: function(oEvent) {
+      // Get the list data of the pressed list
+      var listData = oEvent.getSource().getBindingContext().getProperty();
+
+      var oListNameInput = new Input({
+        value: listData.listName
+      });
+
+      var oDeleteButton = new Button({
+        icon: "sap-icon://delete",
+        type: "Reject"
+      });
+      var oSaveButton = new Button({
+        icon: "sap-icon://save",
+        type: "Accept"        
+      });
+      var oCancelButton = new Button({
+        icon: "sap-icon://sys-cancel"
+      });
+
+      var oDialog = new Dialog({
+        showHeader: false,
+        content: [oListNameInput],
+        buttons: [oDeleteButton, oSaveButton, oCancelButton],
+        afterClose: function() {
+          oDialog.destroy();
+        }
+      });
+
+      oCancelButton.attachPress(function(){
+        oDialog.close();
+      });
+
+      var that = this;
+
+      oSaveButton.attachPress(function(){
+        var sNewName = oListNameInput.getValue();
+        if(sNewName === listData.listName) {
+          oDialog.close();
+          return;
+        }
+
+        var req = jQuery.ajax({
+          url: "/renameList",
+          method: "POST",
+          data: {
+            listId: listData.listId,
+            newListName: sNewName
+          }
+        });
+
+        req.done(function(){
+          MessageToast.show("List name updated successfully");
+          oDialog.close();
+
+          that.getView().setBusy(true);
+          jQuery.sap.delayedCall(500, that, function(){
+            this.getView().getModel().loadData("/lists");
+            this.getView().setBusy(false);
+          });
+        });
+      });
+
+      oDeleteButton.attachPress(function(){
+        oDialog.setBusy(true);
+        var req = jQuery.ajax({
+          url: "/deleteList",
+          method: "POST",
+          data: {
+            listId: listData.listId
+          }
+        });
+
+        req.done(function(){
+          oDialog.setBusy(false);
+          oDialog.close();
+          MessageToast.show("List deleted successfully");
+
+          that.getView().setBusy(true);
+          jQuery.sap.delayedCall(500, that, function(){
+            this.getView().getModel().loadData("/lists");
+            this.getView().setBusy(false);
+          });
+        });
+      });
+
+      oDialog.open();
+    }
     
   });
 

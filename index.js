@@ -20,13 +20,13 @@ app.get('/lists', function(req, res) {
 // Delete a list
 app.post('/deletelist', function(req, res) {
   // Get the name of the list to delete
-  var listName = req.body.listName;
+  var listId = req.body.listId;
 
-  // Check if 'listName' parameter has been
+  // Check if 'listId' parameter has been
   // given in the body of the request
-  if(listName) {
+  if(listId) {
 
-    tdl.deleteList(listName);
+    tdl.deleteList(listId);
     res.send({
       message: "List successfully deleted"
     });
@@ -59,6 +59,20 @@ app.post("/createList", function(req, res) {
       tdl.createList(listName);
       res.status(201).send({message: "The list was created"});
     }
+  } else {
+    res.status(400).send({message: "Bad Request"});
+  }
+});
+
+// Rename a list
+app.post("/renameList", function(req, res) {
+  // Get the ID of the list to be renamed, and the new name
+  var listId = req.body.listId;
+  var newListName = req.body.newListName;
+
+  if(listId && newListName) {
+    tdl.renameList(listId, newListName);
+    res.status(200).send({message: "The list was renamed"});
   } else {
     res.status(400).send({message: "Bad Request"});
   }
