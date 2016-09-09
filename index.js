@@ -78,5 +78,18 @@ app.post("/renameList", function(req, res) {
   }
 });
 
+// Get all the items in a list
+app.get("/lists/:listid", function(req, res) {
+
+  var listId = req.params.listid;
+  var listDetail = tdl.getListItems(listId);
+
+  if(listDetail) {
+    res.send(listDetail);
+  } else {
+    res.status(404).send({message: "No such list"});
+  }
+});
+
 app.listen(portNumber);
 console.log("Listening on port " + portNumber);

@@ -61,5 +61,29 @@ module.exports = {
 
     oList.listData.listName = newlistName;
     db.push("/todolist[" + oList.index + "]", oList.listData, true);
+  },
+
+  getListItems: function(listId) {
+
+    var aLists = db.getData("/todolist");
+
+    var oList;
+    for(var i = 0; i < aLists.length; i++) {
+      if(aLists[i].id === listId) {
+        oList = aLists[i];
+        break;
+      }
+    }
+
+    if(!oList) {
+      // Return false to indicate no such list
+      return false;
+    }
+
+    return {
+      listId: listId,
+      listName: oList.listName,
+      listItems: oList.todoitems
+    };
   }
 }

@@ -1,10 +1,27 @@
 <core:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
-    xmlns:html="http://www.w3.org/1999/xhtml">
+    xmlns:html="http://www.w3.org/1999/xhtml" controllerName="tdl.controller.ListDetail">
   
-  <Page title="My List Title">
+  <Page title="{/listName}">
     <content>
-      
+      <Input />
+      <List id="idToDoList" items="{/listItems}" mode="MultiSelect">
+        <StandardListItem title="{item}" selected="{done}"/>
+      </List>
     </content>
+
+    <footer>
+      <Bar>
+        <contentMiddle>
+          <SegmentedButton select="onListFilterSelect">
+            <items>
+              <SegmentedButtonItem text="All" key="all"/>
+              <SegmentedButtonItem text="Pending" key="pending"/>
+              <SegmentedButtonItem text="Completed" key="completed"/>
+            </items>
+          </SegmentedButton>
+        </contentMiddle>
+      </Bar>
+    </footer>
   </Page>
 
 </core:View>
