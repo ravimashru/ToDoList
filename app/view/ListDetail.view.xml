@@ -3,7 +3,7 @@
   
   <Page title="{/listName}">
     <content>
-      <Input />
+      <Input submit="onListItemSubmit" />
       <List id="idToDoList" items="{/listItems}" mode="MultiSelect">
         <StandardListItem title="{item}" selected="{done}"/>
       </List>

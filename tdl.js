@@ -50,6 +50,11 @@ module.exports = {
     var listIndex = db.getData("/todolist").findIndex(function(e, i, arr) {
       return e.id === listId;
     });
+
+    if(listIndex === -1) {
+      return false;
+    }
+
     return {
       index: listIndex,
       listData: db.getData("/todolist[" + listIndex + "]")
@@ -59,8 +64,14 @@ module.exports = {
   renameList: function(listId, newlistName) {
     var oList = this.getList(listId);
 
-    oList.listData.listName = newlistName;
-    db.push("/todolist[" + oList.index + "]", oList.listData, true);
+    if(oList) {
+      oList.listData.listName = newlistName;
+      db.push("/todolist[" + oList.index + "]", oList.listData, true);
+      return true;
+    } else {
+      return false;
+    }
+    
   },
 
   getListItems: function(listId) {
@@ -85,5 +96,17 @@ module.exports = {
       listName: oList.listName,
       listItems: oList.todoitems
     };
+  },
+
+  addListItem: function(listId, listItem) {
+    var listData = this.getList(listId);
+    
+    if(!listData) {
+      return false;
+    }
+
+    var todoitem = {"item": listItem, "done": false};
+    db.push("/todolist[" + listData.index + "]/todoitems[]", todoitem);
+    return true;
   }
 }

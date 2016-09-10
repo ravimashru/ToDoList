@@ -71,8 +71,12 @@ app.post("/renameList", function(req, res) {
   var newListName = req.body.newListName;
 
   if(listId && newListName) {
-    tdl.renameList(listId, newListName);
-    res.status(200).send({message: "The list was renamed"});
+    var listRenamed = tdl.renameList(listId, newListName);
+    if(listRenamed) {
+      res.status(200).send({message: "The list was renamed"});
+    } else {
+      res.status(400).send({message: "The list could not be renamed"});
+    }
   } else {
     res.status(400).send({message: "Bad Request"});
   }
@@ -88,6 +92,23 @@ app.get("/lists/:listid", function(req, res) {
     res.send(listDetail);
   } else {
     res.status(404).send({message: "No such list"});
+  }
+});
+
+// Add an item to a list
+app.post("/addListItem", function(req, res) {
+  var listId = req.body.listId;
+  var listItem = req.body.listItem;
+
+  if(listId && listItem) {
+    var itemAdded = tdl.addListItem(listId, listItem);
+    if(itemAdded) {
+      res.status(200).send({message: "List item added"});
+    } else {
+      res.status(400).send({message: "Couldn't add item"});
+    }
+  } else {
+    res.status(400).send({message: "Bad Request"});
   }
 });
 
