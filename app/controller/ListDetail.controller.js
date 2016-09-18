@@ -3,8 +3,13 @@ sap.ui.define([
     "sap/ui/model/json/JSONModel",
     "sap/ui/model/Filter",
     "sap/ui/model/FilterOperator",
-    "sap/m/MessageToast"
-  ], function(BaseController, JSONModel, Filter, FilterOperator, MessageToast) {
+    "sap/m/MessageToast",
+    "sap/m/Dialog",
+    "sap/m/Input",
+    "sap/m/Button"
+  ], function(BaseController, JSONModel, Filter,
+      FilterOperator, MessageToast, Dialog,
+      Input, Button) {
 
   "use strict";
 
@@ -82,6 +87,125 @@ sap.ui.define([
           MessageToast.show(oError.responseJSON.message);
         });
       }
+    },
+
+    handleSelectionChange: function(oEvent) {
+      var listItem = oEvent.getParameter('listItem');
+      var isSelected = oEvent.getParameter('selected');
+      var index = listItem.getBindingContext()
+                  .getPath().split("/")[2];
+      var listId = this.getView().getModel().getProperty('/listId');
+
+      var req = jQuery.ajax({
+        url: "/toggleItemState",
+        method: "POST",
+        data: {
+          listId: listId,
+          itemIndex: index
+        }
+      });
+
+      req.fail(function(){
+        MessageToast.show("Oops! Something went wrong...");
+        // Undo the change
+        listItem.setSelected(!isSelected);
+      });
+    },
+
+    handlePress: function(oEvent) {
+      var itemData = oEvent.getSource().getBindingContext().getObject();
+
+      var listItem = oEvent.getSource();
+      var index = listItem.getBindingContext()
+                  .getPath().split("/")[2];
+      var listId = this.getView().getModel().getProperty('/listId');
+
+      var oListItemNameInput = new Input({
+        value: itemData.item
+      });
+
+      var oDeleteButton = new Button({
+        icon: "sap-icon://delete",
+        type: "Reject"
+      });
+      var oSaveButton = new Button({
+        icon: "sap-icon://save",
+        type: "Accept"        
+      });
+      var oCancelButton = new Button({
+        icon: "sap-icon://sys-cancel"
+      });
+
+      var oDialog = new Dialog({
+        showHeader: false,
+        content: [oListItemNameInput],
+        buttons: [oDeleteButton, oSaveButton, oCancelButton],
+        afterClose: function() {
+          oDialog.destroy();
+        }
+      });
+
+      oCancelButton.attachPress(function(){
+        oDialog.close();
+      });
+
+      var that = this;
+
+      oSaveButton.attachPress(function(){
+
+        var sNewName = oListItemNameInput.getValue();
+        if(sNewName === itemData.item) {
+          oDialog.close();
+          return;
+        }
+
+        var req = jQuery.ajax({
+          url: "/renameListItem",
+          method: "POST",
+          data: {
+            listId: listId,
+            itemIndex: index,
+            newText: sNewName
+          }
+        });
+
+        req.done(function(){
+          oDialog.close();
+
+          listItem.setTitle(sNewName);
+        });
+
+        req.fail(function(){
+          MessageToast.show("Oops! Something went wrong...");
+        });
+      });
+
+      oDeleteButton.attachPress(function(){
+        oDialog.setBusy(true);
+        var req = jQuery.ajax({
+          url: "/deleteListItem",
+          method: "POST",
+          data: {
+            listId: listId,
+            itemIndex: index
+          }
+        });
+
+        req.done(function(){
+          oDialog.setBusy(false);
+          oDialog.close();
+          var iIndex = listItem.getParent().indexOfItem(listItem);
+          var oModel = that.getView().getModel();
+          oModel.getData().listItems.splice(iIndex, 1);
+          oModel.refresh();
+        });
+
+        req.fail(function(){
+          MessageToast.show("Oops! Something went wrong...");
+        });
+      });
+
+      oDialog.open();
     }
 
   });

@@ -112,5 +112,33 @@ app.post("/addListItem", function(req, res) {
   }
 });
 
+// Toggle the state of an item
+app.post("/toggleItemState", function(req, res){
+  var listId = req.body.listId;
+  var itemIndex = req.body.itemIndex;
+
+  tdl.toggleItemState(listId, itemIndex);
+  res.status(200).end();
+});
+
+// Rename a list item
+app.post("/renameListItem", function(req, res) {
+  var listId = req.body.listId;
+  var itemIndex = req.body.itemIndex;
+  var newText = req.body.newText;
+
+  tdl.renameListItem(listId, itemIndex, newText);
+  res.status(200).end();
+});
+
+// Delete a list item
+app.post("/deleteListItem", function(req, res) {
+  var listId = req.body.listId;
+  var itemIndex = req.body.itemIndex;
+
+  tdl.deleteListItem  (listId, itemIndex);
+  res.status(200).end();
+});
+
 app.listen(portNumber);
 console.log("Listening on port " + portNumber);

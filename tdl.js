@@ -108,5 +108,25 @@ module.exports = {
     var todoitem = {"item": listItem, "done": false};
     db.push("/todolist[" + listData.index + "]/todoitems[]", todoitem);
     return true;
+  },
+
+  toggleItemState: function(listId, itemIndex) {
+    var oList = this.getList(listId);
+    var oItems = oList.listData.todoitems;
+    oItems[itemIndex].done = !oItems[itemIndex].done;
+    db.push("/todolist["+ oList.index +"]/todoitems["+ itemIndex +"]", oItems[itemIndex], true);
+  },
+
+  renameListItem: function(listId, itemIndex, newText) {
+    var oList = this.getList(listId);
+
+    var oItem = oList.listData.todoitems[itemIndex];
+    oItem.item = newText;
+    db.push("/todolist[" + oList.index + "]/todoitems["+ itemIndex +"]", oItem, true);
+  },
+
+  deleteListItem: function(listId, itemIndex) {
+    var oList = this.getList(listId);
+    db.delete("/todolist["+ oList.index +"]/todoitems["+ itemIndex +"]");
   }
 }

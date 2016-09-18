@@ -4,8 +4,8 @@
   <Page title="{/listName}">
     <content>
       <Input submit="onListItemSubmit" />
-      <List id="idToDoList" items="{/listItems}" mode="MultiSelect">
-        <StandardListItem title="{item}" selected="{done}"/>
+      <List id="idToDoList" items="{/listItems}" mode="MultiSelect" selectionChange="handleSelectionChange">
+        <StandardListItem title="{item}" selected="{done}" type="Active" press="handlePress" />
       </List>
     </content>
 
